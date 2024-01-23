@@ -10,13 +10,20 @@ exports.login = (req, res, next) => {
 };
 
 exports.forgetPassword = (req, res, next) => {
-  res.json({ message: "Forget password" });
+  const { email } = req.body
+
+  res.json({ email });
 };
 
 exports.verifyForgetPassword = (req, res, next) => {
-  res.json({ message: "Verify forget password" });
+  const { token } = req.params
+
+  res.json({ token });
 };
 
 exports.resetPassword = (req, res, next) => {
-  res.json({ message: "Reset password" });
+  const { token } = req.params
+  const { password } = req.body
+
+  res.json({ token, password });
 };
