@@ -7,6 +7,6 @@ exports.getProductsLanding = (req, res, next) => {
   };
   
   exports.getProductById = (req, res, next) => {
-    res.json({ hi: "Get Product By Id" });
+    res.json({ message: "Get Product By Id" });
   };
   
