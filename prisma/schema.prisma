@@ -10,7 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 enum Role {
   USER
   ADMIN
@@ -22,16 +21,16 @@ enum RefundType {
 }
 
 model User {
-  id                Int               @id @default(autoincrement())
-  role              Role              @default(USER)
+  id                Int                @id @default(autoincrement())
+  role              Role               @default(USER)
   name              String?
-  email             String            @unique
+  email             String             @unique
   phone             String?
   password          String
   identityNumber    String?
   branchNumber      String?
   refund            RefundType?
-  point             Int               @default(0)
+  point             Int                @default(0)
   shippingAddresses Shipping_Address[]
   products          Product[]
   favorites         Favorite[]
@@ -71,6 +70,14 @@ model Favorite_Product {
   favoriteId Int      @map("favorite_id")
   product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   productId  Int      @map("product_id")
+}
+
+model Cart {
+  id                  Int @id @default(autoincrement())
+  totalBeforeDiscount Int @default(0) @map("total_before_discount")
+  discount            Int @default(0)
+  deliveryFee         Int @default(0) @map("delivery_fee")
+  total               Int @default(0) 
 }
 
 model Product {
