@@ -34,6 +34,7 @@ model User {
   shippingAddresses Shipping_Address[]
   products          Product[]
   favorites         Favorite[]
+  cart              Cart?
 }
 
 model Shipping_Address {
@@ -73,11 +74,23 @@ model Favorite_Product {
 }
 
 model Cart {
-  id                  Int @id @default(autoincrement())
-  totalBeforeDiscount Int @default(0) @map("total_before_discount")
-  discount            Int @default(0)
-  deliveryFee         Int @default(0) @map("delivery_fee")
-  total               Int @default(0) 
+  id                  Int            @id @default(autoincrement())
+  totalBeforeDiscount Int            @default(0) @map("total_before_discount")
+  discount            Int            @default(0)
+  deliveryFee         Int            @default(0) @map("delivery_fee")
+  total               Int            @default(0)
+  user                User           @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId              Int            @unique @map("user_id")
+  cart_products       Cart_product[]
+}
+
+model Cart_product {
+  id        Int     @id @default(autoincrement())
+  quantity  Int     @default(1)
+  cart      Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  cartId    Int     @map("cart_id")
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  productId Int     @map("product_id")
 }
 
 model Product {
@@ -98,4 +111,5 @@ model Product {
   user             User               @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId           Int                @map("user_id")
   favoriteProducts Favorite_Product[]
+  cart_products    Cart_product[]
 }
