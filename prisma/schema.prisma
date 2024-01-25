@@ -128,7 +128,7 @@ model Order {
   createAt            DateTime        @default(now()) @map("create_at")
   user                User            @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId              Int             @map("user_id")
-  Status              Status[]
+  status              Status[]
   order_products      Order_product[]
 }
 
