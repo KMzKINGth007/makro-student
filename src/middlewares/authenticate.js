@@ -1,6 +1,7 @@
 const createError = require("../utils/createError")
 const jwt = require("jsonwebtoken")
 
+const userService = require("../services/user-service")
 
 const authenticate = async (req, res, next) => {
     try {
