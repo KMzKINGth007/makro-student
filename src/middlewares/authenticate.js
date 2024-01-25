@@ -1,6 +1,6 @@
 const createError = require("../utils/createError")
 const jwt = require("jsonwebtoken")
-const prisma = require("../config/prisma");
+
 
 const authenticate = async (req, res, next) => {
     try {
@@ -26,11 +26,7 @@ const authenticate = async (req, res, next) => {
         return createError(400, "Payload is not in correct format");
       }
   
-      const user = await prisma.user.findUnique({
-        where: {
-          id: payload.id,
-        },
-      });
+      const user = await userService.getUserById(payload.id);
   
       if (!user) {
         return createError(400, "User not found");
