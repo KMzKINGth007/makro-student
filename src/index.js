@@ -8,7 +8,9 @@ const createError = require("./utils/createError");
 
 const authRoute = require("./routes/auth-route");
 const productRoute = require("./routes/product-route");
+const adminRoute = require("./routes/admin-route");
 const authenticate = require("./middlewares/authenticate");
+const admin = require("./middlewares/admin");
 
 const app = express();
 
@@ -17,7 +19,7 @@ app.use(express.json());
 
 app.use("/auth", authRoute);
 app.use("/product", productRoute);
-app.use("/admin", authenticate, admin, () => {})
+app.use("/admin", authenticate, admin, adminRoute);
 
 app.use(errorHandler);
 app.use("*", notFoundHandler);

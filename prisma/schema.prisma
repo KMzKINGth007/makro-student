@@ -11,17 +11,17 @@ datasource db {
 }
 
 model Search {
-  id          Int           @id @default(autoincrement())
-  name        String
-  count       Int
-  user_Searchs User_Search[]
+  id            Int           @id @default(autoincrement())
+  name          String
+  count         Int
+  user_searches User_Search[]
 }
 
 model User_Search {
   id       Int    @id @default(autoincrement())
   user     User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId   Int    @map("user_id")
-  serch    Search @relation(fields: [searchId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  search   Search @relation(fields: [searchId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   searchId Int    @map("search_id")
 }
 
@@ -49,9 +49,9 @@ model User {
   shippingAddresses Shipping_Address[]
   products          Product[]
   favorites         Favorite[]
-  carts             Cart?
+  cart              Cart?
   orders            Order[]
-  user_Searchs      User_Search[]
+  user_searches     User_Search[]
 }
 
 model Shipping_Address {
@@ -95,7 +95,6 @@ model Cart {
   totalBeforeDiscount Int            @default(0) @map("total_before_discount")
   discount            Int            @default(0)
   deliveryFee         Int            @default(0) @map("delivery_fee")
-  total               Int            @default(0)
   user                User           @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId              Int            @unique @map("user_id")
   cart_products       Cart_product[]
@@ -112,10 +111,10 @@ model Cart_product {
 
 model Order_product {
   id        Int     @id @default(autoincrement())
-  quantity  Int     @default(1)
-  order     Order   @relation(fields: [orderId], references: [id])
-  orderId   Int     @map("order_id")
-  product   Product @relation(fields: [productId], references: [id])
+  qunatity  Int     @default(1)
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  orderId   Int
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   productId Int     @map("product_id")
 }
 
@@ -123,9 +122,9 @@ model Order {
   id                  Int             @id @default(autoincrement())
   totalBeforeDiscount Int             @default(0) @map("total_before_discount")
   discount            Int             @default(0)
-  deliveryfee         Int             @default(0) @map("delivery_fee")
+  deliveryFee         Int             @default(0) @map("delivery_fee")
   total               Int             @default(0)
-  createAt            DateTime        @default(now()) @map("create_at")
+  createdAt           DateTime        @default(now()) @map("created_at")
   user                User            @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId              Int             @map("user_id")
   status              Status[]
@@ -141,42 +140,42 @@ enum OrderStatus {
 }
 
 model Status {
-  id       Int         @id @default(autoincrement())
-  status   OrderStatus @default(UNPAID)
-  createAt DateTime    @default(now()) @map("create_at")
-  order    Order       @relation(fields: [orderId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  orderId  Int         @map("order_id")
+  id        Int         @id @default(autoincrement())
+  status    OrderStatus @default(UNPAID)
+  createdAt DateTime    @default(now()) @map("created_at")
+  order     Order       @relation(fields: [orderId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  orderId   Int         @map("order_id")
 }
 
 model Product {
-  id                Int                @id @default(autoincrement())
-  stock             Int                @default(0)
-  unit              Int                @default(1)
-  priceHigh         Int                @map("price_high")
-  minPriceHigh      Int                @map("min_price_high")
-  priceMedium       Int?               @map("price_medium")
-  minPriceMedium    Int?               @map("min_price_medium")
-  priceLow          Int?               @map("price_low")
-  minPriceLow       Int?               @map("min_price_low")
-  detail            String
-  width             Decimal
-  height            Decimal
-  depth             Decimal
-  weight            Decimal
-  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId            Int                @map("user_id")
-  favoriteProducts  Favorite_Product[]
-  cart_products     Cart_product[]
-  order_products    Order_product[]
-  product_Imgs      Product_Img[]
-  category          Category           @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  categoryId        Int
-  brand             Brand              @relation(fields: [brandId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  brandId           Int
-  product_Promotins Product_Promotin[]
+  id                 Int                 @id @default(autoincrement())
+  stock              Int                 @default(0)
+  unit               Int                 @default(1)
+  priceHigh          Int                 @map("price_high")
+  minPriceHigh       Int                 @map("min_price_high")
+  priceMedium        Int?                @map("price_medium")
+  minPriceMedium     Int?                @map("min_price_medium")
+  priceLow           Int?                @map("price_low")
+  minPriceLow        Int?                @map("min_price_low")
+  detail             String
+  width              Decimal
+  height             Decimal
+  depth              Decimal
+  weight             Decimal
+  user               User                @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId             Int                 @map("user_id")
+  favoriteProducts   Favorite_Product[]
+  cart_products      Cart_product[]
+  order_products     Order_product[]
+  product_imgs       Product_Img[]
+  category           Category            @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  categoryId         Int
+  brand              Brand               @relation(fields: [brandId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  brandId            Int                 @map("brand_id")
+  product_promotions Product_Promotion[]
 }
 
-model Product_Promotin {
+model Product_Promotion {
   id          Int       @id @default(autoincrement())
   product     Product   @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   productId   Int       @map("product_id")
@@ -185,19 +184,19 @@ model Product_Promotin {
 }
 
 model Promotion {
-  id                Int                @id @default(autoincrement())
-  name              String
-  bannerUrl         String?            @map("banner_url")
-  discount          Int?
-  point             Int?
-  product_Promotins Product_Promotin[]
+  id                 Int                 @id @default(autoincrement())
+  name               String
+  bannerUrl          String?             @map("banner_url")
+  discount           Int?
+  point              Int?
+  product_promotions Product_Promotion[]
 }
 
 model Product_Img {
   id        Int     @id @default(autoincrement())
   url       String
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  productId Int
+  productId Int     @map("product_id")
 }
 
 model Category {

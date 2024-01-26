@@ -2,7 +2,7 @@ const createError = require("../utils/createError")
 const prisma = require("../config/prisma")
 const bcrypt = require("bcryptjs")
 const userService = require("../services/user-service")
-const jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken")
 
 exports.register = async (req, res, next) => {
   try {
@@ -53,7 +53,7 @@ exports.login = async (req, res, next) => {
     const isPasswordMatch = bcrypt.compare(password, isUserExist.password)
 
     if (!isPasswordMatch) {
-      return createError(400, "email or password os invalid")
+      return createError(400, "Email or password os invalid")
     }
 
     const token = jwt.sign({ id: isUserExist.id }, process.env.JWT_SECRET, {

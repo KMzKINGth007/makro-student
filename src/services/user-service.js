@@ -8,7 +8,6 @@ exports.getUserById = (id) => {
   });
 };
 
-
 exports.getUserByEmail = (email)=>{
   return prisma.user.findFirst({
     where:{
