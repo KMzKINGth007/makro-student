@@ -7,3 +7,21 @@ exports.getUserById = (id) => {
     },
   });
 };
+
+
+exports.getUserByEmail = (email)=>{
+  return prisma.user.findFirst({
+    where:{
+      email,
+    }
+  })
+}
+
+exports.crateUser = (email, password) =>{
+  return prisma.user.create({
+    data:{
+      email,
+      password,
+    }
+  })
+}
